@@ -1,57 +1,18 @@
-# inlang sdk load-test
+### How to repro https://github.com/opral/inlang-fink/issues/8
 
-This repo can be used for volume testing, with more messages than existing unit tests.
+The latest sdk/lix appears to write messages to the root of the repo, even when the project.inlang is located under a sub directory. This was not the case with earlier builds (exactly which is TBD)
 
-- The test starts by opening an inlang project with just one english message.
-- It generates additional engish messages, overwriting ./locales/en/common.json.
-- It can "mock-translate" those into 37 preconfigured languages using the inlang cli.
-- Lint-rule plugins are configured in the project settings but lint reports are not subscribed, unless requested.
-- The test uses the i18next message storage plugin.
 
-To allow additional testing on the generated project e.g. with the ide-extension, the test calls `pnpm clean` when it starts, but not after it runs.
+To repro:
 
-```
-USAGE:
-  pnpm test messageCount [translate] [subscribeToMessages] [subscribeToLintReports] [watchMode]
-e.g.
-  pnpm test 300
-  pnpm test 100 1 1 0
+- git clone this repo
 
-Defaults: translate: 1, subscribeToMessages: 1, subscribeToLintReports: 0, watchMode: 0
-```
+- `pnpm install`
 
-### mock rpc server
-This test expects the rpc server from PR [#2108](https://github.com/opral/monorepo/pull/2108) running on localhost:3000 with MOCK_TRANSLATE=true.
+- start the mock translation server in another terminal
+  in monorepo do `MOCK_TRANSLATE=true pnpm --filter @inlang/server dev`
 
-```sh
-# in your opral/monorepo
-git checkout 1844-sdk-persistence-of-messages-in-project-direcory
-pnpm install
-pnpm build
-MOCK_TRANSLATE=true pnpm --filter @inlang/server dev
-```
+- in this repo run `pnpm translate`  
+  (that calls `PUBLIC_SERVER_BASE_URL=http://localhost:3000 pnpm inlang machine translate -f --project ./project-dir/project.inlang`) 
 
-### install
-```sh
-git clone https://github.com/opral/load-test.git
-cd load-test
-pnpm install
-```
-This test is also available under /inlang/source-code/sdk/load-test in the monorepo, using workspace:* dependencies.
 
-### run
-```sh
-pnpm test messageCount [translate] [subscribeToMessages] [subscribeToLintReports] [watchMode]
-```
-
-### clean
-Called before each test run, does `rm -rf ./locales`.
-```sh
-pnpm clean
-```
-
-### debug in chrome dev tools with node inspector
-Passes --inpect-brk to node.
-```sh
-pnpm inspect messageCount [translate] [subscribeToMessages] [subscribeToLintReports] [watchMode]
-```
