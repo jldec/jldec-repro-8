@@ -4,18 +4,18 @@
 	"type": "module",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"@inlang/cli": "^2.12.6",
-		"@inlang/sdk": "^0.26.5",
-		"@lix-js/client": "^0.8.0",
+		"@inlang/cli": "^2.13.5",
+		"@inlang/sdk": "^0.29.0",
+		"@lix-js/client": "^1.2.0",
 		"debug": "^4.3.4",
-		"i18next": "^23.10.0",
+		"i18next": "^23.10.1",
 		"throttle-debounce": "^5.0.0"
 	},
 	"devDependencies": {
 		"@types/debug": "^4.1.12",
-		"@types/node": "^20.11.20",
-		"@types/throttle-debounce": "5.0.0",
-		"tsx": "^4.7.1"
+		"@types/node": "^20.12.4",
+		"@types/throttle-debounce": "5.0.2",
+		"tsx": "^4.7.2"
 	},
 	"scripts": {
 		"clean": "rm -rf ./locales",
